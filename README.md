@@ -16,19 +16,22 @@ Every question on the College Board's end-of-course summative exam is aligned to
 
 As a first step, this project will focus on the assessment questions used in a particular curriculum, and measure how well they align to the College Board's Computational Thinking Practice and Curriculum Framework.  (As a note, AP classes in most subjects have an analagous set of  thinking practices and framework standards, so one day, this work may be generalized to assess curriculums in other subject areas.)
 
-Two questions to assess are:  
+The three questions to assess are:  
 
-1. Can a TF-IDF vectorization of College Board question prompt with a Logistic Regressor successfully classify an assessment question by Computational Thinking Practice?
-2. If ChatGPT is supplied only with the College Board Framework for Computational Thinking, can it successfully identify the particular thinking practice being assessed by a question prompt?
+1. How accurately does a simple classifier using either a TF-IDF or SentenceTransformer vectorizer identify the Computational Thinking Practice assessed in a question?  
+2. How accurately does ChatGPT, supplied with only the College Board Framework for Computational Thinking and a few sample questions, identify the Computational Thinking Practice assessed in a question?  
+3. Can a useful Dashboard be created to improve the quality of an assessment question?
 
 ### Initial Conclusions:
-1. When just classifying between two different computational thinking practices, both the Logistic Regression and ChatGPT classify with 100% accuracy
+1. The classifier using a TF-IDF vectorization accurately identified the Computational Thinking Practice being accessed in 70% of the questions, while the simple classifier using the Sentence Transformed identified the Computational Thinking Practice being assessed in 85% of the questions. 
+2. ChatGPT had an accuracy of 48% in identifying the Computational Thinking Practice assessed in a question.
 
 ### Next Steps:
-1. Expand this to include all 15 computational thinking practices.  Compare accuracy of Logistic Regression and ChatGPT.
+1. Develop better prompts to improve ChatGPT's classification accuracy.
 2. Determine whether the classifier can also identify the "Essential Knowledge" assessed by the question, not just the computational skill.
 3. Attempt to generalize the classifiers to classify non-assessment questions such as lecture material, lab questions, and homework problems.
 4. Create a visualization that shows the distribution of thinking skills and content assessed over the course of the curriculum.
+
 
 ## Classifying Questions Using Logistic Regression
 As first step, this section will try to classify prompts as assessing one of these two AP Computational Thinking Practices (CTP):
@@ -54,22 +57,44 @@ for (int k = 0; k < arr.length - 1; k++)  {
     System.out.print(k + "" "" + arr[k] + "" "");  
 } 
 ``` 
-*What will be printed as a result of executing the code segment?* 
+*What will be printed as a result of executing the code segment?*  
 
 ## Preprocessing the Data
 In this first step, we will:
-1. Read in example prompts for each category.
-2. Preprocess the data: tokenize, lemmatize, and look at the token frequency distribution by question category.
+1. Load questions assessing each Computational Thinking Practice.
+2. Filter the question set to only consider the most frequently assessed Computational Thinking Practices.
 
 ## Testing the Logistic Regression Classifier on the Questions
-Here, we build a pipeline that does the following:
-1. Preprocess Text: tokenize and lemmatize the text, vectorize using TF-IDF, restricting to 10 features.
-2. Train and test a logistic regression classifier.  Evaluate the model appropriately.
+Here, we build and evaluate a classifier that vectorizes questions using the TF-IDF vectorizer, and classifies using a Logistic Regression Classifier.  
+
+<img src="Reports/Images/LR_ConfusionMatrix.png">
+
+### Interpreting the Logistic Classifier to Identify Key Features
+Determine the most significant works for identifying each question.
+
+<img src="Reports/Images/InterpretTFIDF.png>">
+
+## Classification with Sentence Transformer Encoding
+Next, the questions will be vectorized using a Sentence Transformer Embedding, which may capture some of the semantics in the question lost in the earlier TF-IDF vectorier.  
+
+<img src="Reports/Images/ST_ConfusionMatrix.png">
 
 ## Build and Test a ChatGPT Classifier
 This classifier asks ChatGPT to determine the Computational Thinking Skill being assessed in the problem.  
 1.  Create a function call to ask ChatGPT for the classification
 2.  Test ChatGPT on data set and evaluate classification.
 
+<img src="Reports/Images/ChatGPT_ConfusionMatrix.png">
+
 ## Summary  
-When just looking at two categories of questions, both the Logistic Regression and ChatGPT classifiers classify the computational thinking practice with 100% accuracy.  This should be expanded to incorporate classify questions from all 15 thinking practices.  In addition, it should be trained to classify the content assessed, not just the skill.
+This project had some success at identifying the skills assessed in a particular question.  
+
+1. The classifier using a TF-IDF vectorization accurately identified the Computational Thinking Practice being accessed in 70% of the questions, while the simple classifier using the Sentence Transformed identified the Computational Thinking Practice being assessed in 85% of the questions. 
+2. ChatGPT had an accuracy of 48% in identifying the Computational Thinking Practice assessed in a question.
+3. A simple tool was developed for identifying the skill assessed by a question 
+
+### Next Steps:
+1. Develop better prompts to improve ChatGPT's classification accuracy.
+2. Determine whether the classifier can also identify the "Essential Knowledge" assessed by the question, not just the computational skill.
+3. Attempt to generalize the classifiers to classify non-assessment questions such as lecture material, lab questions, and homework problems.
+4. Create a visualization that shows the distribution of thinking skills and content assessed over the course of the curriculum.

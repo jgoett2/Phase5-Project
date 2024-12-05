@@ -72,7 +72,7 @@ Here, we build and evaluate a classifier that vectorizes questions using the TF-
 ### Interpreting the Logistic Classifier to Identify Key Features
 Determine the most significant works for identifying each question.
 
-<img src="Reports/Images/InterpretTFIDF.png">
+<img src="Reports/Images/InterpretTFIDF.png" width=800px>
 
 ## Classification with Sentence Transformer Encoding
 Next, the questions will be vectorized using a Sentence Transformer Embedding, which may capture some of the semantics in the question lost in the earlier TF-IDF vectorier.  
